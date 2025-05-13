@@ -5,7 +5,8 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "test": "echo \"No tests specified for backend - passing by default\" && exit 0"
   },
   "author": "",
   "license": "ISC",
