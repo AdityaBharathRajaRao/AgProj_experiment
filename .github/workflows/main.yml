@@ -33,6 +33,13 @@ jobs:
           sed -i 's/"scripts": {/"scripts": {\n    "test": "echo No tests specified && exit 0",/' package.json
         fi
     
+    # Set up MongoDB for backend tests only
+    - name: Start MongoDB
+      if: matrix.project == 'backend'
+      uses: supercharge/mongodb-github-action@1.10.0
+      with:
+        mongodb-version: '4.4'
+    
     - name: Run tests
       working-directory: ./${{ matrix.project }}
       run: npm test
@@ -42,12 +49,3 @@ jobs:
         JWT_SECRET: ${{ matrix.project == 'backend' && 'test-secret' || '' }}
         STRIPE_SECRET_KEY: ${{ matrix.project == 'backend' && 'sk_test_example' || '' }}
         NODE_ENV: test
-
-    # MongoDB service only for backend tests
-    services:
-      mongodb:
-        image: mongo:4.4
-        ports:
-          - 27017:27017
-        # Only run for backend tests
-        if: ${{ matrix.project == 'backend' }}
