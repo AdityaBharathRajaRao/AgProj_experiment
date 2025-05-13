@@ -17,10 +17,11 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
+        cache-dependency-path: ./${{ matrix.project }}/package-lock.json
     
     - name: Install dependencies
       working-directory: ./${{ matrix.project }}
-      run: npm install
+      run: npm ci || npm install
     
     - name: Run tests
       working-directory: ./${{ matrix.project }}
@@ -30,3 +31,10 @@ jobs:
         MONGO_URI: ${{ matrix.project == 'backend' && 'mongodb://localhost:27017/testdb' || '' }}
         JWT_SECRET: ${{ matrix.project == 'backend' && 'test-secret' || '' }}
         NODE_ENV: test
+
+    # Add MongoDB service for backend tests
+    services:
+      mongodb:
+        image: mongo:4.4
+        ports:
+          - 27017:27017
