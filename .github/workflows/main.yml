@@ -1,0 +1,31 @@
+name: MERN Test Pipeline
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: ['frontend', 'backend', 'admin']
+      fail-fast: false
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: ./${{ matrix.project }}/package-lock.json
+    
+    - name: Install dependencies
+      working-directory: ./${{ matrix.project }}
+      run: npm install
+    
+    - name: Run tests
+      working-directory: ./${{ matrix.project }}
+      run: npm test
+      env:
+        CI: true
