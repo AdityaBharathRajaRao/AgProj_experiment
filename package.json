@@ -6,7 +6,7 @@
   "license": "ISC",
   "description": ""
   "scripts": {
-  "test": "react-scripts test",
+  "test": "jest",
   "test:auth": "react-scripts test src/__tests__/auth/auth.test.js",
   "test:watch": "react-scripts test --watch"
 }
